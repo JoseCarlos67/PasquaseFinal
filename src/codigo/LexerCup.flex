@@ -1,17 +1,15 @@
 package codigo;
 import java_cup.runtime.Symbol;
-
-%%/********************************************************************************************************************/
-
+%%
 %class LexerCup
 %type java_cup.runtime.Symbol
 %cup
 %full
 %line
 %char
-LETRA = [a-zA-Z_]+
-DIGITO = [0-9]+
-espaco = [ ,\t,\r,\n]+
+LETRA=[a-zA-Z_]+
+NUMERO=[0-9]
+espaco=[ ,\t,\r,\n]+
 %{
     private Symbol symbol(int type, Object value){
         return new Symbol(type, yyline, yycolumn, value);
@@ -20,17 +18,16 @@ espaco = [ ,\t,\r,\n]+
         return new Symbol(type, yyline, yycolumn);
     }
 %}
-
-%%/********************************************************************************************************************/
+%%
 
 /* bibIO  */
 ( "bibIO" ) {return new Symbol(sym.bibIO, yychar, yyline, yytext());}
 
-/* Ponto e virgula  */
-( ";" ) {return new Symbol(sym.pontoVirgula, yychar, yyline, yytext());}
+/* Comentário  */
+( "{"(.)*"}" | "{"(.)*"\n "(.)*"}") {/*Ignore*/}
 
-/* comentario  */
-\{([^\\\"]|\\.)*\} {return new Symbol(sym.comentario, yychar, yyline, yytext());}
+/* Ponto e virgula  */
+( ";" ) {return new Symbol(sym.pv, yychar, yyline, yytext());}
 
 /* utilize  */
 ( "utilize" ) {return new Symbol(sym.utilize, yychar, yyline, yytext());}
@@ -41,17 +38,14 @@ espaco = [ ,\t,\r,\n]+
 /* fim  */
 ( "fim" ) {return new Symbol(sym.fim, yychar, yyline, yytext());}
 
-/* .  */
-( "." ) {return new Symbol(sym.pontoFinal, yychar, yyline, yytext());}
-
 /* programa  */
 ( "programa" ) {return new Symbol(sym.programa, yychar, yyline, yytext());}
 
-/* inteiro */
-("(-"{DIGITO}+")")|{DIGITO}+ {return new Symbol(sym.inteiro, yychar, yyline, yytext());}
-
 /* real */
-{DIGITO}+"."{DIGITO}+ | "(-"{DIGITO}+"."{DIGITO}+")" {return new Symbol(sym.real, yychar, yyline, yytext());}
+{NUMERO}+"."{NUMERO}+ | "(-"{NUMERO}+ . {NUMERO}+ ")" {return new Symbol(sym.real, yychar, yyline, yytext());}
+
+/* inteiro */
+("(-"{NUMERO}+")")|{NUMERO}+ {return new Symbol(sym.inteiro, yychar, yyline, yytext());}
 
 /* Constante */
 ("const") {return new Symbol(sym.constante, yychar, yyline, yytext());}
@@ -65,14 +59,11 @@ espaco = [ ,\t,\r,\n]+
 /* Caractere */
 ( "Caractere" ) {return new Symbol(sym.Caractere, yychar, yyline, yytext());}
 
-/* caractere */
-\'([^\\\"]|\\.)\' {return new Symbol(sym.caractere, yychar, yyline, yytext());}
-
 /* Inteiro */
 ( "Inteiro" ) {return new Symbol(sym.Inteiro, yychar, yyline, yytext());}
 
 /* Variavel */
-( "var" ) {return new Symbol(sym.variavel, yychar, yyline, yytext());}
+( "var" ) {return new Symbol(sym.var, yychar, yyline, yytext());}
 
 /* Virgula */
 (", " | ",") {return new Symbol(sym.virgula, yychar, yyline, yytext());}
@@ -116,12 +107,6 @@ espaco = [ ,\t,\r,\n]+
 /* Escrevaln */
 ( "escrevaln" ) {return new Symbol(sym.escrevaln, yychar, yyline, yytext());}
 
-/*Operadores Logicos */
-( "e" | "ou" ) {return new Symbol(sym.operador_logico, yychar, yyline, yytext());}
-
-/*Negacao */
-( "nao") {return new Symbol(sym.negacao, yychar, yyline, yytext());}
-
 /* Leia */
 ( "leia" ) {return new Symbol(sym.leia, yychar, yyline, yytext());}
 
@@ -146,32 +131,41 @@ espaco = [ ,\t,\r,\n]+
 /* Potencia */
 ( "^" ) {return new Symbol(sym.potencia, yychar, yyline, yytext());}
 
-//Resto da divisao
+/* Resto */
 ( "%" ) {return new Symbol(sym.resto, yychar, yyline, yytext());}
 
-//Abre parenteses
+/* Parentesis de abertura */
 ( "(" ) {return new Symbol(sym.abre_parenteses, yychar, yyline, yytext());}
 
-//Fecha parenteses
+/* Parentesis de fechamento */
 ( ")" ) {return new Symbol(sym.fecha_parenteses, yychar, yyline, yytext());}
 
-//TIPO boleano
+/* Tipo Booleano*/
 ( "Booleano" ) {return new Symbol(sym.Booleano, yychar, yyline, yytext());}
 
-//Valor boleano
+/* valor Booleano*/
 ( "verdadeiro" | "falso" ) {return new Symbol(sym.booleano, yychar, yyline, yytext());}
 
-//Identificador
-{LETRA}({LETRA}|{DIGITO})* {return new Symbol(sym.id, yychar, yyline, yytext());}
-
-//Palavra
-\"([^\\\"]|\\.)*\" {return new Symbol(sym.palavra, yychar, yyline, yytext());}
-
-//Operadores relacionais
+/*Operadores Relacionais */
 ( ">" | "<" | "==" | "<>" | ">=" | "<=" ) {return new Symbol(sym.operadores_relacionais, yychar, yyline, yytext());}
 
-//Espaco em branco
+/*Operadores Lógicos */
+( "e" | "ou" | "nao" ) {return new Symbol(sym.operador_logico, yychar, yyline, yytext());}
+
+/* Identificador */
+{LETRA}({LETRA}|{NUMERO})* {return new Symbol(sym.id, yychar, yyline, yytext());}
+
+/* caractere */
+\'([^\\\"]|\\.)\' {return new Symbol(sym.caractere, yychar, yyline, yytext());}
+
+/* palavra */
+\"([^\\\"]|\\.)*\" {return new Symbol(sym.palavra, yychar, yyline, yytext());}
+
+/* .  */
+( "." ) {return new Symbol(sym.pf, yychar, yyline, yytext());}
+
+/* espacos en blanco */
 {espaco} {/*Ignore*/}
 
-//Erro
+/* Error de analisis */
  . {return new Symbol(sym.ERROR, yychar, yyline, yytext());}

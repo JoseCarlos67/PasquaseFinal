@@ -15,16 +15,16 @@ parser code
 }
 :};
 
-terminal bibIO, pontoVirgula, utilize, ini, fim, pontoFinal, programa, inteiro, real, constante, variavel, dois_pontos,
+terminal bibIO, pv, utilize, ini, fim, pf, programa, inteiro, real, constante, var, dois_pontos,
     virgula, funcao, procedimento, escreva, escrevaln, leia, leialn, para, de, ate, faca, atribuicao,
-    palavra, enquanto, se, senao, entao, booleano, Booleano, comentario, negacao, soma, subtracao,
-    potencia, multiplicacao, divisao, resto, operador_logico, operadores_relacionais, Inteiro, Real,
-    Palavra, Caractere, caractere, abre_parenteses, fecha_parenteses, id ,ERROR;
-
-non terminal INICIO, BIBLIOTECA, NUMERO, GERACONST, GERASUB, GERAFUNC, CHAMAFUNC, PARAMFUNC, PARAMETRO, DECLARACAO,
-    CONTINUA_DECL, LISTAIDS, LISTAIDS_LEIA, LISTAIDS_ESC, TIPO_DADO, GERAPROC, COMANDO, LISTA_COMANDOS, PARA, ENQUANTO,
-    SE, SENAO, ENTAO, TESTE, VALOR, ESCREVA, ESCREVALN, LEIA, LEIALN, REPETICAO, ATRIBUICAO, CONDICIONAL, EXPRESSAO,
-    CONT_EXPRESSAO, EXPRESSAO_RELACIONAL, EXPRESSAO_LOGICA, OPERADORES, NUMERO_ID, COMENTARIO;
+    palavra, enquanto, se, senao, entao, booleano, Booleano, soma, subtracao, potencia, multiplicacao, divisao, resto, 
+    operador_logico, negacao, operadores_relacionais, 
+    Inteiro, Real, Palavra, Caractere, caractere, abre_parenteses, fecha_parenteses,id,
+    ERROR;
+non terminal INICIO, BIBLIOTECA, NUMERO, GERACONST, GERASUB, GERAFUNC,CHAMAFUNC, PARAMFUNC, PARAMETRO, DECLARACAO, 
+    CONTINUA_DECL, LISTAIDS, LISTAIDS_LEIA, LISTAIDS_ESC, TIPO_DADO, GERAPROC, COMANDO, PARA, ENQUANTO, SE, SENAO, 
+    ENTAO, TESTE, VALOR, ESCREVA, ESCREVALN, LEIA, LEIALN, REPETICAO, ATRIBUICAO, CONDICIONAL, EXPRESSAO, 
+    EXPRESSAO_RELACIONAL, OPERADORES, NUMERO_ID, LISTA_COMANDOS, CONT_EXPRESSAO, EXPRESSAO_LOGICA;
 
 precedence left subtracao, soma;
 precedence left multiplicacao, divisao, resto;
@@ -33,15 +33,15 @@ precedence right potencia;
 start with INICIO;
 
 INICIO ::= 
-    COMENTARIO programa id pontoVirgula COMENTARIO BIBLIOTECA  | TESTE
+    programa id pv BIBLIOTECA | TESTE
 ;
 
 BIBLIOTECA ::=
-    utilize bibIO pontoVirgula GERACONST GERASUB DECLARACAO ini COMANDO fim pontoFinal
+    utilize bibIO pv GERACONST GERASUB DECLARACAO ini COMANDO fim pf
 ;
 
 GERACONST ::=
-    constante id NUMERO pontoVirgula GERACONST |
+    constante id NUMERO pv GERACONST |
 ;
 
 GERASUB ::=
@@ -49,28 +49,20 @@ GERASUB ::=
 ;
 
 GERAFUNC ::=
-    funcao id abre_parenteses PARAMETRO fecha_parenteses dois_pontos TIPO_DADO pontoVirgula DECLARACAO ini COMANDO fim pontoVirgula
-;
-
-PARAMFUNC ::=
-    id | id virgula PARAMFUNC |
-;
-
-CHAMAFUNC ::=
-    id abre_parenteses PARAMFUNC fecha_parenteses pontoVirgula
+    funcao id abre_parenteses PARAMETRO fecha_parenteses dois_pontos TIPO_DADO pv DECLARACAO ini COMANDO fim pv
 ;
 
 
 PARAMETRO ::=
-    id dois_pontos TIPO_DADO | id dois_pontos TIPO_DADO pontoVirgula PARAMETRO |
+    id dois_pontos TIPO_DADO | id dois_pontos TIPO_DADO pv PARAMETRO |
 ;
 
 DECLARACAO ::=
-    variavel CONTINUA_DECL |
+    var CONTINUA_DECL |
 ;
 
 CONTINUA_DECL ::=
-    LISTAIDS dois_pontos TIPO_DADO pontoVirgula | LISTAIDS dois_pontos TIPO_DADO pontoVirgula CONTINUA_DECL
+    LISTAIDS dois_pontos TIPO_DADO pv | LISTAIDS dois_pontos TIPO_DADO pv CONTINUA_DECL
 ;
 
 LISTAIDS ::=
@@ -82,15 +74,15 @@ LISTAIDS_ESC ::=
 ;
 
 LISTAIDS_LEIA ::=
-    id | id virgula LISTAIDS_LEIA
+    id | id virgula LISTAIDS_LEIA 
 ;
 
 VALOR ::=
-    inteiro | real | palavra | caractere | booleano
+    real | inteiro | palavra | caractere | booleano
 ;
 
 NUMERO ::=
-    inteiro | real
+   real | inteiro 
 ;
 
 TIPO_DADO ::=
@@ -98,35 +90,23 @@ TIPO_DADO ::=
 ;
 
 GERAPROC ::=
-    procedimento id abre_parenteses PARAMETRO fecha_parenteses pontoVirgula DECLARACAO ini COMANDO fim pontoVirgula
+    procedimento id abre_parenteses PARAMETRO fecha_parenteses pv DECLARACAO ini COMANDO fim pv
 ;
 
 ESCREVA ::=
-    escreva abre_parenteses LISTAIDS_ESC fecha_parenteses pontoVirgula
+    escreva abre_parenteses LISTAIDS_ESC fecha_parenteses pv
 ;
 
 ESCREVALN ::=
-    escrevaln abre_parenteses LISTAIDS_ESC fecha_parenteses pontoVirgula
+    escrevaln abre_parenteses LISTAIDS_ESC fecha_parenteses pv
 ;
 
 LEIA ::=
-    leia abre_parenteses LISTAIDS_LEIA fecha_parenteses pontoVirgula
+    leia abre_parenteses LISTAIDS_LEIA fecha_parenteses pv
 ;
 
 LEIALN ::=
-    leialn abre_parenteses LISTAIDS_LEIA fecha_parenteses pontoVirgula
-;
-
-COMANDO ::=
-    LISTA_COMANDOS | LISTA_COMANDOS COMANDO | REPETICAO | REPETICAO COMANDO
-;
-
-LISTA_COMANDOS ::=
-    ESCREVA | ESCREVALN | LEIA | LEIALN | ATRIBUICAO | CHAMAFUNC | CONDICIONAL
-;
-
-ATRIBUICAO ::=
-    id atribuicao VALOR pontoVirgula | id atribuicao CHAMAFUNC | id atribuicao EXPRESSAO pontoVirgula
+    leialn abre_parenteses LISTAIDS_LEIA fecha_parenteses pv
 ;
 
 CONDICIONAL ::=
@@ -138,23 +118,43 @@ SE ::=
 ;
 
 SENAO ::=
-    senao ini COMANDO fim pontoVirgula |
+    senao ini COMANDO fim pv |
 ;
 
 ENTAO ::=
-    entao ini COMANDO fim pontoVirgula
+    entao ini COMANDO fim pv
+;
+
+PARAMFUNC ::=
+    id | id virgula PARAMFUNC |
+;
+
+CHAMAFUNC ::=
+    id abre_parenteses PARAMFUNC fecha_parenteses pv 
+;
+
+ATRIBUICAO ::=
+    id atribuicao VALOR pv | id atribuicao CHAMAFUNC | id atribuicao EXPRESSAO pv 
+;
+
+COMANDO ::=
+    LISTA_COMANDOS | LISTA_COMANDOS COMANDO | REPETICAO | REPETICAO COMANDO
+;
+
+LISTA_COMANDOS ::=
+    ESCREVA | LEIA | LEIALN | ESCREVALN | ATRIBUICAO | CHAMAFUNC | CONDICIONAL 
 ;
 
 REPETICAO ::=
-    PARA | ENQUANTO
+    PARA | ENQUANTO 
 ;
 
 PARA ::=
-    para id de inteiro ate inteiro faca ini COMANDO fim pontoVirgula
+    para id de inteiro ate inteiro faca ini COMANDO fim pv
 ;
 
 ENQUANTO ::=
-    enquanto abre_parenteses EXPRESSAO_LOGICA fecha_parenteses faca ini COMANDO fim pontoVirgula
+    enquanto abre_parenteses EXPRESSAO_LOGICA fecha_parenteses faca ini COMANDO fim pv
 ;
 
 EXPRESSAO ::=
@@ -162,7 +162,7 @@ EXPRESSAO ::=
 ;
 
 CONT_EXPRESSAO ::=
-    OPERADORES NUMERO_ID CONT_EXPRESSAO |
+    OPERADORES NUMERO_ID CONT_EXPRESSAO | 
 ;
 
 OPERADORES ::=
@@ -172,23 +172,16 @@ OPERADORES ::=
 NUMERO_ID ::=
     NUMERO | id
 ;
-
 EXPRESSAO_RELACIONAL ::=
-    NUMERO_ID operadores_relacionais NUMERO_ID | NUMERO_ID OPERADORES NUMERO_ID operadores_relacionais NUMERO_ID |
+    NUMERO_ID operadores_relacionais NUMERO_ID | NUMERO_ID OPERADORES NUMERO_ID operadores_relacionais NUMERO_ID | 
     NUMERO_ID operadores_relacionais NUMERO_ID OPERADORES NUMERO_ID
 ;
 
 EXPRESSAO_LOGICA ::=
-    EXPRESSAO_RELACIONAL |
-    EXPRESSAO_RELACIONAL operador_logico EXPRESSAO_LOGICA |
-    negacao EXPRESSAO_RELACIONAL |
-    negacao EXPRESSAO_RELACIONAL operador_logico EXPRESSAO_LOGICA
-;
-
-COMENTARIO ::=
-    comentario |
+    EXPRESSAO_RELACIONAL | EXPRESSAO_RELACIONAL operador_logico EXPRESSAO_LOGICA |
+    negacao EXPRESSAO_RELACIONAL | negacao EXPRESSAO_RELACIONAL operador_logico EXPRESSAO_LOGICA
 ;
 
 TESTE ::=
-    COMENTARIO
+    ESCREVALN
 ;
