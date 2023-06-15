@@ -1,0 +1,9 @@
+programa teste;
+utilize bibIO;
+inicio
+se (a > a + 2 && a < a || a <> a && b< a ) entao
+inicio
+leia(a);
+fim;
+fim.
+

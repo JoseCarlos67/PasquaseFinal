@@ -1,0 +1,194 @@
+package codigo;
+
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+}
+:};
+
+terminal bibIO, pontoVirgula, utilize, ini, fim, pontoFinal, programa, inteiro, real, constante, variavel, dois_pontos,
+    virgula, funcao, procedimento, escreva, escrevaln, leia, leialn, para, de, ate, faca, atribuicao,
+    palavra, enquanto, se, senao, entao, booleano, Booleano, comentario, negacao, soma, subtracao,
+    potencia, multiplicacao, divisao, resto, operador_logico, operadores_relacionais, Inteiro, Real,
+    Palavra, Caractere, caractere, abre_parenteses, fecha_parenteses, id ,ERROR;
+
+non terminal INICIO, BIBLIOTECA, NUMERO, GERACONST, GERASUB, GERAFUNC, CHAMAFUNC, PARAMFUNC, PARAMETRO, DECLARACAO,
+    CONTINUA_DECL, LISTAIDS, LISTAIDS_LEIA, LISTAIDS_ESC, TIPO_DADO, GERAPROC, COMANDO, LISTA_COMANDOS, PARA, ENQUANTO,
+    SE, SENAO, ENTAO, TESTE, VALOR, ESCREVA, ESCREVALN, LEIA, LEIALN, REPETICAO, ATRIBUICAO, CONDICIONAL, EXPRESSAO,
+    CONT_EXPRESSAO, EXPRESSAO_RELACIONAL, EXPRESSAO_LOGICA, OPERADORES, NUMERO_ID, COMENTARIO;
+
+precedence left subtracao, soma;
+precedence left multiplicacao, divisao, resto;
+precedence right potencia;
+
+start with INICIO;
+
+INICIO ::= 
+    COMENTARIO programa id pontoVirgula COMENTARIO BIBLIOTECA  | TESTE
+;
+
+BIBLIOTECA ::=
+    utilize bibIO pontoVirgula GERACONST GERASUB DECLARACAO ini COMANDO fim pontoFinal
+;
+
+GERACONST ::=
+    constante id NUMERO pontoVirgula GERACONST |
+;
+
+GERASUB ::=
+    GERAFUNC GERASUB | GERAPROC GERASUB |
+;
+
+GERAFUNC ::=
+    funcao id abre_parenteses PARAMETRO fecha_parenteses dois_pontos TIPO_DADO pontoVirgula DECLARACAO ini COMANDO fim pontoVirgula
+;
+
+PARAMFUNC ::=
+    id | id virgula PARAMFUNC |
+;
+
+CHAMAFUNC ::=
+    id abre_parenteses PARAMFUNC fecha_parenteses pontoVirgula
+;
+
+
+PARAMETRO ::=
+    id dois_pontos TIPO_DADO | id dois_pontos TIPO_DADO pontoVirgula PARAMETRO |
+;
+
+DECLARACAO ::=
+    variavel CONTINUA_DECL |
+;
+
+CONTINUA_DECL ::=
+    LISTAIDS dois_pontos TIPO_DADO pontoVirgula | LISTAIDS dois_pontos TIPO_DADO pontoVirgula CONTINUA_DECL
+;
+
+LISTAIDS ::=
+    id | id virgula LISTAIDS | id atribuicao VALOR | id atribuicao VALOR virgula LISTAIDS
+;
+
+LISTAIDS_ESC ::=
+    LISTAIDS_LEIA | palavra virgula LISTAIDS_LEIA | palavra
+;
+
+LISTAIDS_LEIA ::=
+    id | id virgula LISTAIDS_LEIA
+;
+
+VALOR ::=
+    inteiro | real | palavra | caractere | booleano
+;
+
+NUMERO ::=
+    inteiro | real
+;
+
+TIPO_DADO ::=
+    Inteiro | Real | Palavra | Caractere | Booleano
+;
+
+GERAPROC ::=
+    procedimento id abre_parenteses PARAMETRO fecha_parenteses pontoVirgula DECLARACAO ini COMANDO fim pontoVirgula
+;
+
+ESCREVA ::=
+    escreva abre_parenteses LISTAIDS_ESC fecha_parenteses pontoVirgula
+;
+
+ESCREVALN ::=
+    escrevaln abre_parenteses LISTAIDS_ESC fecha_parenteses pontoVirgula
+;
+
+LEIA ::=
+    leia abre_parenteses LISTAIDS_LEIA fecha_parenteses pontoVirgula
+;
+
+LEIALN ::=
+    leialn abre_parenteses LISTAIDS_LEIA fecha_parenteses pontoVirgula
+;
+
+COMANDO ::=
+    LISTA_COMANDOS | LISTA_COMANDOS COMANDO | REPETICAO | REPETICAO COMANDO
+;
+
+LISTA_COMANDOS ::=
+    ESCREVA | ESCREVALN | LEIA | LEIALN | ATRIBUICAO | CHAMAFUNC | CONDICIONAL
+;
+
+ATRIBUICAO ::=
+    id atribuicao VALOR pontoVirgula | id atribuicao CHAMAFUNC | id atribuicao EXPRESSAO pontoVirgula
+;
+
+CONDICIONAL ::=
+    SE ENTAO SENAO
+;
+
+SE ::=
+    se abre_parenteses EXPRESSAO_LOGICA fecha_parenteses
+;
+
+SENAO ::=
+    senao ini COMANDO fim pontoVirgula |
+;
+
+ENTAO ::=
+    entao ini COMANDO fim pontoVirgula
+;
+
+REPETICAO ::=
+    PARA | ENQUANTO
+;
+
+PARA ::=
+    para id de inteiro ate inteiro faca ini COMANDO fim pontoVirgula
+;
+
+ENQUANTO ::=
+    enquanto abre_parenteses EXPRESSAO_LOGICA fecha_parenteses faca ini COMANDO fim pontoVirgula
+;
+
+EXPRESSAO ::=
+    NUMERO_ID OPERADORES NUMERO_ID CONT_EXPRESSAO
+;
+
+CONT_EXPRESSAO ::=
+    OPERADORES NUMERO_ID CONT_EXPRESSAO |
+;
+
+OPERADORES ::=
+    soma | subtracao | divisao | multiplicacao | resto | potencia
+;
+
+NUMERO_ID ::=
+    NUMERO | id
+;
+
+EXPRESSAO_RELACIONAL ::=
+    NUMERO_ID operadores_relacionais NUMERO_ID | NUMERO_ID OPERADORES NUMERO_ID operadores_relacionais NUMERO_ID |
+    NUMERO_ID operadores_relacionais NUMERO_ID OPERADORES NUMERO_ID
+;
+
+EXPRESSAO_LOGICA ::=
+    EXPRESSAO_RELACIONAL |
+    EXPRESSAO_RELACIONAL operador_logico EXPRESSAO_LOGICA |
+    negacao EXPRESSAO_RELACIONAL |
+    negacao EXPRESSAO_RELACIONAL operador_logico EXPRESSAO_LOGICA
+;
+
+COMENTARIO ::=
+    comentario |
+;
+
+TESTE ::=
+    COMENTARIO
+;
