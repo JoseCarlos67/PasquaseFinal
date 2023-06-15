@@ -27,7 +27,7 @@ espaco=[ ,\t,\r,\n]+
 ( "{"(.)*"}" | "{"(.)*"\n "(.)*"}") {/*Ignore*/}
 
 /* Ponto e virgula  */
-( ";" ) {return new Symbol(sym.pv, yychar, yyline, yytext());}
+( ";" ) {return new Symbol(sym.pontoVirgula, yychar, yyline, yytext());}
 
 /* utilize  */
 ( "utilize" ) {return new Symbol(sym.utilize, yychar, yyline, yytext());}

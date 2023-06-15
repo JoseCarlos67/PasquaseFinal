@@ -15,7 +15,7 @@ espaco=[ ,\t,\r]+
 {espaco} {/*Ignore*/}
 
 /* Ponto e virgula  */
-( ";" ) {lexeme=yytext(); return pv;}
+( ";" ) {lexeme=yytext(); return pontoVirgula;}
 
 /* Ponto final  */
 ( "." ) {lexeme=yytext(); return pf;}

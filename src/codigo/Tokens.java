@@ -11,7 +11,7 @@ package codigo;
  */
 public enum Tokens {
     bibIO,
-    pv,
+    pontoVirgula,
     utilize,
     ini,
     fim,

@@ -122,7 +122,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 case Main:
                     resultado += "  <Reservada main>\t" + lexer.lexeme + "\n";
                     break;*/
-                case pv:
+                case pontoVirgula:
                     resultado += "  <Ponto e virgula>\t" + lexer.lexeme + "\n";
                     break;
                 case pf:

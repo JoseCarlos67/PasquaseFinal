@@ -15,7 +15,7 @@ parser code
 }
 :};
 
-terminal bibIO, pv, utilize, ini, fim, pf, programa, inteiro, real, constante, var, dois_pontos,
+terminal bibIO, pontoVirgula, utilize, ini, fim, pf, programa, inteiro, real, constante, var, dois_pontos,
     virgula, funcao, procedimento, escreva, escrevaln, leia, leialn, para, de, ate, faca, atribuicao,
     palavra, enquanto, se, senao, entao, booleano, Booleano, soma, subtracao, potencia, multiplicacao, divisao, resto, 
     operador_logico, negacao, operadores_relacionais, 
@@ -33,15 +33,15 @@ precedence right potencia;
 start with INICIO;
 
 INICIO ::= 
-    programa id pv BIBLIOTECA | TESTE
+    programa id pontoVirgula BIBLIOTECA | TESTE
 ;
 
 BIBLIOTECA ::=
-    utilize bibIO pv GERACONST GERASUB DECLARACAO ini COMANDO fim pf
+    utilize bibIO pontoVirgula GERACONST GERASUB DECLARACAO ini COMANDO fim pf
 ;
 
 GERACONST ::=
-    constante id NUMERO pv GERACONST |
+    constante id NUMERO pontoVirgula GERACONST |
 ;
 
 GERASUB ::=
@@ -49,12 +49,12 @@ GERASUB ::=
 ;
 
 GERAFUNC ::=
-    funcao id abre_parenteses PARAMETRO fecha_parenteses dois_pontos TIPO_DADO pv DECLARACAO ini COMANDO fim pv
+    funcao id abre_parenteses PARAMETRO fecha_parenteses dois_pontos TIPO_DADO pontoVirgula DECLARACAO ini COMANDO fim pontoVirgula
 ;
 
 
 PARAMETRO ::=
-    id dois_pontos TIPO_DADO | id dois_pontos TIPO_DADO pv PARAMETRO |
+    id dois_pontos TIPO_DADO | id dois_pontos TIPO_DADO pontoVirgula PARAMETRO |
 ;
 
 DECLARACAO ::=
@@ -62,7 +62,7 @@ DECLARACAO ::=
 ;
 
 CONTINUA_DECL ::=
-    LISTAIDS dois_pontos TIPO_DADO pv | LISTAIDS dois_pontos TIPO_DADO pv CONTINUA_DECL
+    LISTAIDS dois_pontos TIPO_DADO pontoVirgula | LISTAIDS dois_pontos TIPO_DADO pontoVirgula CONTINUA_DECL
 ;
 
 LISTAIDS ::=
@@ -90,23 +90,23 @@ TIPO_DADO ::=
 ;
 
 GERAPROC ::=
-    procedimento id abre_parenteses PARAMETRO fecha_parenteses pv DECLARACAO ini COMANDO fim pv
+    procedimento id abre_parenteses PARAMETRO fecha_parenteses pontoVirgula DECLARACAO ini COMANDO fim pontoVirgula
 ;
 
 ESCREVA ::=
-    escreva abre_parenteses LISTAIDS_ESC fecha_parenteses pv
+    escreva abre_parenteses LISTAIDS_ESC fecha_parenteses pontoVirgula
 ;
 
 ESCREVALN ::=
-    escrevaln abre_parenteses LISTAIDS_ESC fecha_parenteses pv
+    escrevaln abre_parenteses LISTAIDS_ESC fecha_parenteses pontoVirgula
 ;
 
 LEIA ::=
-    leia abre_parenteses LISTAIDS_LEIA fecha_parenteses pv
+    leia abre_parenteses LISTAIDS_LEIA fecha_parenteses pontoVirgula
 ;
 
 LEIALN ::=
-    leialn abre_parenteses LISTAIDS_LEIA fecha_parenteses pv
+    leialn abre_parenteses LISTAIDS_LEIA fecha_parenteses pontoVirgula
 ;
 
 CONDICIONAL ::=
@@ -118,11 +118,11 @@ SE ::=
 ;
 
 SENAO ::=
-    senao ini COMANDO fim pv |
+    senao ini COMANDO fim pontoVirgula |
 ;
 
 ENTAO ::=
-    entao ini COMANDO fim pv
+    entao ini COMANDO fim pontoVirgula
 ;
 
 PARAMFUNC ::=
@@ -130,11 +130,11 @@ PARAMFUNC ::=
 ;
 
 CHAMAFUNC ::=
-    id abre_parenteses PARAMFUNC fecha_parenteses pv 
+    id abre_parenteses PARAMFUNC fecha_parenteses pontoVirgula
 ;
 
 ATRIBUICAO ::=
-    id atribuicao VALOR pv | id atribuicao CHAMAFUNC | id atribuicao EXPRESSAO pv 
+    id atribuicao VALOR pontoVirgula | id atribuicao CHAMAFUNC | id atribuicao EXPRESSAO pontoVirgula
 ;
 
 COMANDO ::=
@@ -150,11 +150,11 @@ REPETICAO ::=
 ;
 
 PARA ::=
-    para id de inteiro ate inteiro faca ini COMANDO fim pv
+    para id de inteiro ate inteiro faca ini COMANDO fim pontoVirgula
 ;
 
 ENQUANTO ::=
-    enquanto abre_parenteses EXPRESSAO_LOGICA fecha_parenteses faca ini COMANDO fim pv
+    enquanto abre_parenteses EXPRESSAO_LOGICA fecha_parenteses faca ini COMANDO fim pontoVirgula
 ;
 
 EXPRESSAO ::=
